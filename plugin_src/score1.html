@@ -1,0 +1,59 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>read text file</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+</head>
+<body>
+    <p>wordbook name:</p>
+    <input type="text" name="bookname" id="bookname"/>
+    <p>wordbook describe:</p>
+    <input type="text" name="describe" id="describe"/>
+    <input type="file" id="file"/>
+    <button id="hahah"">hahahah</button>
+    <script>
+        function loadword() {
+            var file = document.getElementById('file').files[0];
+            var reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function (theFile) {
+                return function (e) {
+                    // Print the contents of the file
+                    var span = document.createElement('span');
+                    var str = e.target.result.toString();
+                    var strs = new Array();
+                    strs = str.split(" ");
+                    for (i = 0; i < strs.length; i++) {
+                        document.write(strs[i] + "<br/>");
+                    }
+                };
+            })(file);
+            // Read in the file
+            reader.readAsText(file);
+        }
+        $(document).ready(function () {
+             $("#hahah").click(
+             function() {
+                if ($("#bookname").val() == '') {
+                    alert("bookname is null");
+                    $("#bookname").focus();
+                    return;
+                }
+                if ($("#describe").val() == '') {
+                    alert("describe is null");
+                    $("#describe").focus();
+                    return;
+                }
+                if ($("#file").val() == '') {
+                    alert("file is null");
+                    $("#file").focus();
+                    return;
+                }
+                loadword();
+             });
+       });
+    </script>
+
+</body>
+</html>
