@@ -18,7 +18,14 @@ $(document).ready(function () {
         }
         loadword();
     });
-
+    $("#newtab").click(
+        function(){
+            alert("sssss");
+            chrome.app.window.create('blank.html', {
+                id: 'blank'
+            });
+        }
+    );
     chrome.cookies.getAll({
         url: "http://www.shanbay.com"
     }, function (cookies) {
@@ -33,15 +40,18 @@ $(document).ready(function () {
         reader.onload = (function (theFile) {
             return function (e) {
                 // Print the contents of the file
-                var span = document.createElement('span');
+
                 var str = e.target.result.toString();
                 var strs = new Array();
-                strs = str.split("\n");
+                strs = str.split(/\r?\n/);
+                if(confirm("确认添加单词书？一共"+strs.length + "个单词")){
                 for (i = 0; i < strs.length; i++) {
                     if(i%200 == 0)
                          var id = createunit(i/200+1);
-                    alert("id = "+ id + "word = "+strs[i]);
+//                   alert("id = "+ id + "word ="+strs[i]+"***********");
                     addword(id,strs[i]);
+                }}else{
+                    return;
                 }
             };
         })(file);
@@ -61,7 +71,7 @@ $(document).ready(function () {
         xhr.send(params);
         if(xhr.status == 200){
             array = xhr.responseText.match("\"id\": (.*?),");
-            alert("unit id = "+array[1]);
+//            alert("unit id = "+array[1]);
             return array[1];
         }else{
             return 0;
