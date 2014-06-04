@@ -1,6 +1,11 @@
 $(document).ready(function () {
     var array;
+    $("#hahah").click(function () {
+            var option_url = chrome.extension.getURL('s.html');
+            chrome.tabs.create({url:option_url,selected:true});
+    });
     $("#test").click(function() {
+		
         if ($("#bookname").val() == '') {
             alert("bookname is null");
             $("#bookname").focus();
