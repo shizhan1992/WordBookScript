@@ -6,14 +6,9 @@ $(document).ready(function () {
     });
     $("#test").click(function() {
 		
-        if ($("#bookname").val() == '') {
+        if ($("#bookid").val() == '') {
             alert("bookname is null");
             $("#bookname").focus();
-            return;
-        }
-        if ($("#describe").val() == '') {
-            alert("describe is null");
-            $("#describe").focus();
             return;
         }
         if ($("#file").val() == '') {
@@ -23,18 +18,18 @@ $(document).ready(function () {
         }
         loadword();
     });
-    $("#newtab").click(
-        function(){
-            alert("sssss");
-            chrome.app.window.create('blank.html', {
-                id: 'blank'
-            });
-        }
-    );
+//    $("#msg").click(
+//        function(){
+//            alert("sssss");
+//            chrome.app.window.create('blank.html', {
+//                id: 'blank'
+//            });
+//        }
+//    );
     chrome.cookies.getAll({
         url: "http://www.shanbay.com"
     }, function (cookies) {
-        document.getElementById('msg').innerHTML = cookies.length;
+//        document.getElementById('msg').innerHTML = cookies.length;
     });
 });
 
@@ -79,7 +74,7 @@ $(document).ready(function () {
 //            alert("unit id = "+array[1]);
             return array[1];
         }else{
-            return 0;
+            alter("请检查单词书id是否正确并确保网络正常！");
         }
     }
 
