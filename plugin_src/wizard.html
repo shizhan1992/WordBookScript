@@ -7,21 +7,28 @@
         #container {width: 100%;}
         #photo {float: right; width: 50%;}
         #content {float: left; width: 50%;}
-        #text { margin-left: 180px; margin-top: 40px }
+        #text { margin-left: 160px; margin-top: 40px }
     </style>
     <script type="text/javascript" src="jquery-1.11.1.min.js"></script>
-    <script src="popup.js"></script>
+    <script src="progress/jquery.percentageloader-0.1.js"></script>
+    <link rel="stylesheet" href="progress/jquery.percentageloader-0.1.css">
+    <script src="wizard.js"></script>
   </head>
   <body>
     <div id="container">
         <div id="photo"><img src="introduction.jpg" /></div>
         <div id="content">
            <div id="text">
+               <p>扇贝网站有访问频率限制，如果添加单词超过1400个，请每隔半分钟分批添加！</p>
                <p>id:<input type="text" name="bookid" id="bookid"/></p>
                <input type="file" id="file"/>
                <br/>
                <br/>
                <button id="test" type="button">开始添加单词</button>
+               <br/>
+               <br/>
+               <div id="topLoader"></div>
+               <div id="hint"></div>
            </div>
         </div>
      </div>
