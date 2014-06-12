@@ -31,16 +31,27 @@ function loadword() {
 }
 var loop = function(){
     if(i < strs.length){
-        var id = createunit(book_id);
-        if(id == -1) return;
-        for( ;i < 200*j;i++)
-        {
+//        var id = createunit(book_id);
+//        if(id == -1) return;
+//        for( ;i < 200*j;i++)
+//        {
+//            addword(id,strs[i].trim()) ;
+//        }
+//        j++;
+//        setTimeout(loop,10000);
+//            topLoader.setProgress(done / strs.length);
+//        topLoader.setValue(done.toString() + '/' + strs.length.toString());
+        if(i%200 == 0){
+            id = createunit(book_id);
             addword(id,strs[i].trim()) ;
-        }
-        j++;
-        setTimeout(loop,10000);
+            i++;
+            setTimeout(loop,5000);
             topLoader.setProgress(done / strs.length);
-        topLoader.setValue(done.toString() + '/' + strs.length.toString());
+            topLoader.setValue(done.toString() + '/' + strs.length.toString());
+        }
+        addword(id,strs[i].trim()) ;
+        i++;
+        setTimeout(loop,300);
     }
     else{
         topLoader.setProgress(done / strs.length);
