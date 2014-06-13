@@ -51,7 +51,7 @@ var loop = function(){
         }
         addword(id,strs[i].trim()) ;
         i++;
-        setTimeout(loop,300);
+        setTimeout(loop,500);
     }
     else{
         topLoader.setProgress(done / strs.length);
