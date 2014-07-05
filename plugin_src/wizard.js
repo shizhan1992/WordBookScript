@@ -4,9 +4,9 @@
 $(document).ready(function () {
     count = 0;
     done = 0;
-    topLoader = $("#topLoader").percentageLoader({width: 120, height: 120, controllable : true});
-    topLoader.setProgress(0);
-    topLoader.setValue('0');
+//    topLoader = $("#topLoader").percentageLoader({width: 120, height: 120, controllable : true});
+//    topLoader.setProgress(0);
+//    topLoader.setValue('0');
 
     $("#test").click(function() {
         if ($("#bookid").val() == '') {
@@ -46,10 +46,10 @@ function loadword() {
         if(confirm("确认添加单词书？一共"+strs.length + "个单词")){
 //            document.getElementById('hint').innerHTML = "请耐心等待几分钟，勿关闭窗口，添加单词中......";
             i = 0;
+            document.getElementById('hint').innerHTML = "正在添加............. "+"0/"+strs.length;
             setTimeout(loop,2000);
-//            iID = setInterval(loop1,1000);
-        }else{
 
+        }else{
             return;
         }
     });
@@ -59,20 +59,22 @@ function loadword() {
 
 var loop1 = function(){
     if(i < strs.length){
-        document.getElementById('hint').innerHTML = "this is "+i+"time";
-        if(i%200 == 0){
-            id = createunit(book_id);
+        id = createunit(book_id);
+        addword(id,strs[i].trim()) ;
+        i++;
+        while(i%200 != 0){
             addword(id,strs[i].trim()) ;
             i++;
-//            topLoader.setProgress(done / strs.length);
-//            topLoader.setValue(done.toString() + '/' + strs.length.toString());
         }
-        addword(id,strs[i].trim());
-        i++;
-//        setTimeout(loop,3000);
+//        while(count < i){ console.log(done+ "  "+count+"  "+ i );}
+//        if(count == i){
+            setTimeout(loop1,5000);
+            document.getElementById('hint').innerHTML = "正在添加............."+done+"/"+strs.length;
+            topLoader.setProgress(done / strs.length);
+            topLoader.setValue(done.toString() + '/' + strs.length.toString());
+//        }
     }
     else{
-        clearInterval(iID);
         topLoader.setProgress(done / strs.length);
         document.getElementById('hint').innerHTML = "添加完成！一共添加了"+ done + "个单词！\r\n" +
             "（如少于预期个数，可能是有重复单词或者错误拼写单词）";
@@ -81,22 +83,24 @@ var loop1 = function(){
 
 var loop = function(){
     if(i < strs.length){
-        document.getElementById('hint').innerHTML = "this is "+i+"time";
+        if(i%60 == 0){
+            document.getElementById('hint').innerHTML = "正在添加............."+done+"/"+strs.length;
+        }
         if(i%200 == 0){
             id = createunit(book_id);
             addword(id,strs[i].trim()) ;
             i++;
-            setTimeout(loop,5000);
-            topLoader.setProgress(done / strs.length);
-            topLoader.setValue(done.toString() + '/' + strs.length.toString());
+            setTimeout(loop,4000);
+//            topLoader.setProgress(done / strs.length);
+//            topLoader.setValue(done.toString() + '/' + strs.length.toString());
             return;
         }
         addword(id,strs[i].trim());
         i++;
-        setTimeout(loop,Math.random()*750+800);
+        setTimeout(loop,50);
     }
     else{
-        topLoader.setProgress(done / strs.length);
+//        topLoader.setProgress(done / strs.length);
         document.getElementById('hint').innerHTML = "添加完成！一共添加了"+ done + "个单词！\r\n" +
             "（如少于预期个数，可能是有重复单词或者错误拼写单词）";
     }
@@ -126,6 +130,13 @@ function addword(id, word) {
     var params1 = "id="  +id  + "&word=" + word;
 //    document.getElementById("msg").innerHTML = "id="  +array[1] + "&word=" + $('#describe').val();
     xhr1.open("POST", "http://www.shanbay.com/api/v1/wordlist/vocabulary/", false);
+//    xhr1.onreadystatechange = function () {
+//        if (xhr1.readyState == 4) {
+//            count++;
+//            if(xhr1.status == 200)
+//                done++;
+//        }
+//    };
     xhr1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
     xhr1.setRequestHeader("Cookie", chrome.cookies);
     xhr1.setRequestHeader("Content-length", params1.length);
