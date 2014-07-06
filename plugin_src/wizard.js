@@ -43,42 +43,21 @@ function loadword() {
         strs = new Array();
         strs = str.split(/\r?\n/);
         book_id = $("#bookid").val();
-        if(confirm("确认添加单词书？一共"+strs.length + "个单词")){
-//            document.getElementById('hint').innerHTML = "请耐心等待几分钟，勿关闭窗口，添加单词中......";
-            i = 0;
-            document.getElementById('hint').innerHTML = "正在添加............. "+"0/"+strs.length;
-            setTimeout(loop,2000);
-
+        var totalwordsnum = strs.length;
+        if(totalwordsnum <= 1800){
+            if(confirm("确认添加单词书？一共"+strs.length + "个单词")){
+                i = 0;
+                setTimeout(loop,100);
+            }else{
+                return;
+            }
         }else{
+            alert("一次添加单词不能超过1800个！（详见使用说明）");
             return;
         }
     });
     // Read in the file
     reader.readAsText(file);
-}
-
-var loop1 = function(){
-    if(i < strs.length){
-        id = createunit(book_id);
-        addword(id,strs[i].trim()) ;
-        i++;
-        while(i%200 != 0){
-            addword(id,strs[i].trim()) ;
-            i++;
-        }
-//        while(count < i){ console.log(done+ "  "+count+"  "+ i );}
-//        if(count == i){
-            setTimeout(loop1,5000);
-            document.getElementById('hint').innerHTML = "正在添加............."+done+"/"+strs.length;
-            topLoader.setProgress(done / strs.length);
-            topLoader.setValue(done.toString() + '/' + strs.length.toString());
-//        }
-    }
-    else{
-        topLoader.setProgress(done / strs.length);
-        document.getElementById('hint').innerHTML = "添加完成！一共添加了"+ done + "个单词！\r\n" +
-            "（如少于预期个数，可能是有重复单词或者错误拼写单词）";
-    }
 }
 
 var loop = function(){
@@ -88,16 +67,20 @@ var loop = function(){
         }
         if(i%200 == 0){
             id = createunit(book_id);
-            addword(id,strs[i].trim()) ;
-            i++;
-            setTimeout(loop,4000);
-//            topLoader.setProgress(done / strs.length);
-//            topLoader.setValue(done.toString() + '/' + strs.length.toString());
+            if(id != -1){
+                addword(id,strs[i].trim()) ;
+                i++;
+                setTimeout(loop,1000);
+            }
             return;
         }
-        addword(id,strs[i].trim());
-        i++;
-        setTimeout(loop,50);
+        var status = addword(id,strs[i].trim());
+        if( status == 1){
+            i++;
+            setTimeout(loop,50);
+        }
+        else
+            return;
     }
     else{
 //        topLoader.setProgress(done / strs.length);
@@ -120,7 +103,7 @@ function createunit(bookidp){
 //            alert("unit id = "+array[1]);
         return array[1];
     }else{
-        alert("请检查单词书id是否正确并确保网络正常！");
+        alert("请检查单词书id是否正确并确保网络正常！（如都正常，请在60分钟后重试）");
         return -1;
     }
 }
@@ -144,8 +127,10 @@ function addword(id, word) {
     count++;
     if(xhr1.status == 200){
         done++;
+        return 1;
     }else{
-        alert("请检查单词书id是否正确并确保网络正常！");
+        alert("请检查单词书id是否正确并确保网络正常！（如都正常，请在60分钟后重试）");
+        return -1;
     }
 }
 
